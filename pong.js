@@ -1,6 +1,19 @@
 // select canvas
 const cvs = document.getElementById("pong");
+
+// get Context of canvs = methods and properties to draw and do a lot of thing to the canvas
 const ctx = cvs.getContext("2d");
+
+// load sounds 
+let hit = new Audio();
+let wall = new Audio();
+let userScore = new Audio();
+let comScore = new Audio();
+
+hit.src = "sounds/hit.mp3";
+wall.src = "sounds/wall.mp3";
+comScore.src = "sounds/comScore.mp3";
+userScore.src = "sounds/userScore.mp3"
 
 // create the user paddle
 const user = {
@@ -139,11 +152,14 @@ function update() {
 
     if(ball.y + ball.radius > cvs.clientHeight || ball.y - ball.radius < 0) {
         ball.velocityY = -ball.velocityY;
+        wall.play();
     }
 
     let player = (ball.x < cvs.clientWidth/2) ? user : com;
 
     if(collision(ball, player)) {
+        // play sound
+        hit.play();
         // where the ball hit the player
         let collidePoint = ball.y - (player.y + player.height/2);
 
